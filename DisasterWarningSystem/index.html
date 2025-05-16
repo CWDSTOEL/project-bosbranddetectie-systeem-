@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <title>Mijn Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    
+    <div id = "sidebar">
+        <button id = "toggleSidebar">☰</button>
+        
+        <nav id ="menu">
+            <ul>
+                <li><a href = "index.html"> Dashboard</a></li>
+                <li><a href = "about.html"> About Us</a></li>
+                <li><a href = "contact.html"> Contact</a></li>
+                
+            </ul>
+        </nav>
+    </div>
+    <div class="container">
+        <header>
+             <div class="header-content">
+        <h1>Dashboard</h1>
+        <div class="header-right">
+            <a href="login.html" class="login-button">Login</a>
+
+
+        </div>
+    </div>
+        </header>
+        <main class="dashboard">
+            <section class="card">
+                <h2>Temperatuur</h2>
+                <p>21°C</p>
+            </section>
+            
+            </section>
+            <section class="card">
+                <h2>FireIndex</h2>
+                <p>3 - Matig risico</p>
+            </section>
+            <section id="kaart-container">
+    <h2>Kaart</h2>
+    <div id="kaart"></div>
+</section>
+
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    <script>
+    
+        const kaart = L.map('kaart').setView([52.1, 5.1], 7);
+
+    
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(kaart);
+
+        
+        L.marker([52.1, 5.1]).addTo(kaart)
+            .bindPopup('Startpunt Nederland')
+            .openPopup();
+</script>
+            <section id="extended-weather">
+    <h2>Extended Weather Information</h2>
+   
+</div>
+
+</section>
+
+
+        </main>
+        <div class="forecast-section">
+    <div class="forecast-card">
+        <h3>Vandaag</h3>
+        <p>🌡️ <span id="temp0">-- °C</span></p>
+        <p>💧 <span id="hum0">-- %</span></p>
+        <p>🌬️ <span id="wind0">-- km/u</span></p>
+    </div>
+    <div class="forecast-card">
+        <h3>Morgen</h3>
+        <p>🌡️ <span id="temp1">-- °C</span></p>
+        <p>💧 <span id="hum1">-- %</span></p>
+        <p>🌬️ <span id="wind1">-- km/u</span></p>
+    </div>
+    <div class="forecast-card">
+        <h3>Overmorgen</h3>
+        <p>🌡️ <span id="temp2">-- °C</span></p>
+        <p>💧 <span id="hum2">-- %</span></p>
+        <p>🌬️ <span id="wind2">-- km/u</span></p>
+    </div>
+</div>
+    </div>
+    <script>
+    const API_KEY = 'f93da5fa26823e8838922569e887abae'
+    const CITY = 'Tilburg';
+    const UNITS = 'metric';
+
+    async function haalWeerdataOp() {
+        const url = `https://api.openweathermap.org/data/2.5/forecast?q=${CITY}&appid=${API_KEY}&units=${UNITS}&cnt=24`;
+        const response = await fetch(url);
+        const data = await response.json();
+
+        
+        for (let i = 0; i < 3; i++) {
+            const block = data.list[i * 8]; 
+            document.getElementById(`temp${i}`).innerText = `${Math.round(block.main.temp)} °C`;
+            document.getElementById(`hum0`.replace('0', i)).innerText = `${block.main.humidity} %`;
+            document.getElementById(`wind${i}`).innerText = `${Math.round(block.wind.speed)} km/u`;
+        }
+    }
+
+    haalWeerdataOp();
+</script>
+
+
+</body>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const toggleButton = document.getElementById("toggleSidebar");
+    const sidebar = document.getElementById("sidebar");
+    const body = document.body;
+
+    toggleButton.addEventListener("click", () => {
+      sidebar.classList.toggle("open");
+      body.classList.toggle("sidebar-open");
+    });
+  });
+</script>
+
+</html>
+
+
